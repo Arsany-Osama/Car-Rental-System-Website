@@ -1,0 +1,224 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    }
+    
+    button{
+        font-size: 1rem;
+        margin-top: 0.2rem;
+        padding: 10px 0px;
+        border-radius: 20px;
+        outline: none;
+        border: none;
+        height: 3rem;
+        width: 7%;
+        color: #fff;
+        cursor: pointer;
+        background-color: black;    
+        }
+        button:hover{
+            background: #00163C;
+            }
+
+        
+    
+    .navbar{
+    width: 85%;
+    margin: auto;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    }
+    
+    .navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 10px;
+    }
+    
+    .navbar ul li a{   
+    text-decoration: none;
+    color: black;
+    text-transform: uppercase;
+    }
+
+    section{
+        padding: 30px 10%;
+    }
+
+
+    .landpage{   
+        min-height: 100vh;
+        background-image: url(https://static.moniteurautomobile.be/imgcontrol/images_tmp/clients/moniteur/c1440-d720/content/medias/images/news/39000/100/50/porsche-taycan-sport-turismo-3.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #header{
+        font-family: poppins;
+    }
+   
+    #txt1{
+        margin-bottom: 450px;
+        color: #fff;
+        font-size: 100px;
+    font-family: poppins;
+        }
+        #txt2{
+            margin-bottom: 450px;
+            color: #fff;
+            font-size: 100px;
+        font-family: poppins;
+            }
+        
+       
+        .form-container form{
+            margin-top: 380px;
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 20px;
+            align-items: center;
+            gap: 2rem;
+            position: absolute;
+            bottom: 4rem;
+            left: 390px;
+            background: #fff;
+            padding: 40px;
+            }
+            
+            .input-box{
+            flex: 1 1 7rem;
+            display: flex;
+            flex-direction: column;
+            }
+            
+            .input-box input{
+            padding: 7px;
+            outline: none;
+            border: none;
+            background: #c6c6c6;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            }
+            
+.form-container .btn{
+flex: 1 1 7rem;
+padding: 10px 34px;
+border: none;
+border-radius: 0.7rem;
+background: black;
+color: #fff;
+font-size: 1rem;
+font-weight: 500;
+}
+            
+.form-container .btn:hover{
+background: #00163C;
+}
+
+#cars{
+    margin-left: 590px;
+    font-size: 50px;
+    font-family: poppins;
+}
+
+.car-container{
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, auto));
+gap: 1rem;
+margin-top: 2rem;
+}
+
+.car-container .box{
+    padding: 10px;
+    border-radius:20px ;
+    box-shadow: 1px 4px 41px rgba(1, 1, 1, 0.2);
+}
+
+.car-container .box .box-img{
+    width: 100%;
+    height: 200px;
+}
+
+.car-container .box .box-img img{
+    width: 100%;
+    height: 100%;
+    border-radius:20px ;
+    object-fit: cover;
+    object-position: center;
+}
+
+.car-container .box p{
+padding: 0 10px;
+border: 1px ;
+width: 50px;
+border-radius: 8px;
+margin: 1rem 0 1rem;
+font-family: poppins;
+}
+
+.car-container .box h3{
+    padding: 0 5px;
+    margin: 1rem 0 1rem;
+    font-family: poppins;
+}
+
+.car-container .box .btn{
+
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    padding: 10px 0px;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    width: 90%;
+    color: #fff;
+    cursor: pointer;
+    background-color: black;
+    
+}
+.car-container .box .btn:hover{
+    background: #00163C;
+}
+
+
+.footer{
+    display: grid; /* divide to rows and columns (grid)*/
+    grid-template-columns: repeat(auto-fit, minmax(180px, auto)); /* number of columns and columns width*/
+    gap: 4rem;
+    background: linear-gradient(to right, #00163C, black );
+
+    border-top-left-radius: 130px;
+}
+
+.footer-content p{
+    color: #fff;
+    font-size: 30px ;
+    font-family: poppins;
+}
+
+.footer-content h4{
+    margin-top: 50px;
+    padding-bottom: 20px;
+    color: #fff;
+    font-size: 25px;
+    font-family: poppins;
+}
+
+.footer-content a{
+    display: block;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 100px; /* font weight = bold level */
+    font-family: poppins;
+}

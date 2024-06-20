@@ -1,0 +1,57 @@
+
+body{
+background-image: url(https://www.supercars.net/blog/wp-content/uploads/2020/10/2017-Aston-Martin-DB11-001-2000-scaled.jpg);
+background-repeat: no-repeat;
+background-position: center;
+background-attachment: fixed;
+background-size: cover; 
+}
+
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: "poppins" , sans-serif;
+}
+
+.wrapper{
+width: 500px;
+height: 60vh;
+padding: 2rem 1rem;
+margin: 50px auto;
+background-color: #fff;
+border-radius: 10px;
+text-align: center;
+box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+margin-top: 170px;
+}
+
+h1{
+margin-bottom: 2rem;
+
+}
+
+form input{
+width: 92%;
+outline: none;
+border: 1px solid #fff;
+padding: 12px 20px;
+margin-bottom:10px ;
+border-radius: 20px;
+background: #e4e4e4;
+}
+
+button{
+
+        font-size: 1rem;
+        margin-top: 1.8rem;
+        padding: 10px 0px;
+        border-radius: 20px;
+        outline: none;
+        border: none;
+        width: 90%;
+        color: black;
+        cursor: pointer;
+        background-color: #c6c6c6;
+        
+}

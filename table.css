@@ -1,0 +1,62 @@
+h1
+{
+  font-size: 30px;
+  text-shadow: -1px -1px #f00, 1px 1px #a00, -3px 0 4px #000;
+  font-family:"Segoe print", Arial, Helvetica, sans-serif;
+  color: #dd0000;
+  font-weight:lighter;
+  -moz-box-shadow:none;  
+  -webkit-box-shadow: none;  
+  box-shadow:none;  
+  text-align:center;
+  display:block;
+}
+  
+
+table{
+  width:100%;
+  border-spacing: 0px;
+}
+
+table th{
+  background-color: rgb(59, 184, 177);
+  font-weight: bold;
+  color: #4b4747;
+  text-emphasis: none;
+  text-align: center;
+}
+
+
+table td{
+  padding: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+}
+
+
+label{
+  color:red;
+}
+
+hr {
+  border-top: 1px solid #35827d;
+  margin: 1em 0;
+  padding: 0;
+}
+
+input[type="submit"] {
+  background-color: #04AA6D; /* Green */
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  font-size: 16px;
+}
+
+label {
+  color: #B4886B;
+  font-weight: bold;
+  width: 90px;
+  float: left;
+}
