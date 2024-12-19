@@ -30,42 +30,71 @@
 </body>
 </html>
 <?php
+  session_start();
+  include("connection.php");
 
-session_start();
-include("connection.php");
+  if (isset($_POST['submit'])) {
+      if ($conn->connect_error) {
+          die("something wrong , please comeback later" . $conn->connect_error);
+      }
 
-  if(isset($_POST['submit'])){
+      // Sanitize and validate email
+      $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          echo '<script>alert("Invalid email format.");</script>';
+          exit;
+      }
 
-    // Check connection
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-    }
+      // Get the plain text password
+      $pass = trim($_POST["pass"]);
 
-    $email = $_POST["email"];
-    $pass = $_POST["pass"];
+      // Check if the user is an admin
+      $stmt = $conn->prepare("SELECT password FROM admin WHERE email = ?");
+      $stmt->bind_param("s", $email);
+      $stmt->execute();
+      $stmt->store_result();
 
-    // if the user is admin
-    $sql2 = "SELECT email , password FROM admin WHERE email='$email' AND password='$pass'";
-    $result2 = $conn->query($sql2);
-    if($result2->num_rows > 0){
+      if ($stmt->num_rows > 0) {
+          $stmt->bind_result($hashedPassword);
+          $stmt->fetch();
+          
+          if (password_verify($pass, $hashedPassword)) {
+              // Admin login success
+              header("Location: adminHome.php");
+              exit;
+          }
+      }
+      $stmt->close();
 
-      header("Location: adminHome.php");
-      
-      exit(1);
-    }
+      // Check if the user is a customer
+      $stmt = $conn->prepare("SELECT cssn, email, cpass , fname , lname FROM customer WHERE email = ?");
+      $stmt->bind_param("s", $email);
+      $stmt->execute();
+      $result = $stmt->get_result();
 
-    $sql = "SELECT email , cpass FROM customer WHERE email = '$email' AND cpass = '$pass'";
-    $result = $conn->query($sql);
-    if($result->num_rows > 0){
-      // $data = $result[0];
-      $_SESSION['user_data'] = $result->fetch_assoc();
-      header("Location: home.php");
-      
-      exit(1);
-    }
-    else{
-      echo '<script>alert("Email Or Password Not Found")</script>';
-     
-    } 
+      if ($result->num_rows > 0) {
+          $row = $result->fetch_assoc();
+          $hashedPassword = $row['cpass'];
+        
+          if (password_verify($pass, $hashedPassword)) {
+              // Store user data in session
+              $_SESSION['user_data'] = [
+                  'cssn' => $row['cssn'],
+                  'email' => $row['email'],
+                  'fname' => $row['fname'],
+                  'lname' => $row['lname']
+              ];
+
+              // Customer login success
+              header("Location: home.php");
+              exit;
+          }
+      }
+
+      // If login fails
+      echo '<script>alert("Invalid Email or Password.");</script>';
+      $stmt->close();
   }
+
+  $conn->close();
 ?>
