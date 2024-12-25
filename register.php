@@ -1,6 +1,4 @@
-<?php
-session_start();
-?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +12,7 @@ session_start();
     <form action="" method="post" onsubmit="return validatePassword()">
       <h2>Register</h2>
       <div class="input-field">
-        <input type="text" required name="ssn" pattern="\d{9}" title="SSN must be 9 digits">
+        <input type="text" required name="ssn" >
         <label>SSN</label>
       </div>
 
@@ -60,6 +58,9 @@ session_start();
 </html>
 
 <?php
+require 'vendor/autoload.php'; // Include the autoloader for Symfony Validator
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints as Assert;
   if (isset($_POST['submit'])) {
       include("connection.php");
 
@@ -69,20 +70,80 @@ session_start();
           die("An unexpected error occurred. Please try again later.");
       }
 
+ //////////////////////////////////////////SYMFONY VALIDATION////////////////////////////////////////////
+       // Set up Symfony Validator
+    $validator = Validation::createValidator();
+
+    // Define validation constraints
+    $constraints = new Assert\Collection([
+        'ssn' => [
+            new Assert\NotBlank(),
+            new Assert\Regex(['pattern' => '/^\d{3}$/', 'message' => 'SSN must be exactly 3 digits.']),
+        ],
+        'email' => [
+            new Assert\NotBlank(),
+            new Assert\Email(['message' => 'Please enter a valid email address.']),
+        ],
+        'fname' => [
+            new Assert\NotBlank(),
+            new Assert\Length(['max' => 50, 'maxMessage' => 'First name must not exceed 50 characters.']),
+        ],
+        'lname' => [
+            new Assert\NotBlank(),
+            new Assert\Length(['max' => 50, 'maxMessage' => 'Last name must not exceed 50 characters.']),
+        ],
+        'password' => [
+            new Assert\NotBlank(),
+            new Assert\Length(['min' => 8, 'max' => 50,
+                'minMessage' => 'Password must be at least 8 characters long.',
+                'maxMessage' => 'Password must not exceed 50 characters long.']),
+        ],
+        'cpassword' => [
+            new Assert\NotBlank(),
+            new Assert\EqualTo(['value' => $_POST['password'], 'message' => 'Passwords do not match.']),
+        ],
+        'date' => [
+            new Assert\NotBlank(),
+            new Assert\Date(['message' => 'Invalid date format.']),
+        ],
+    ]);
+
+    // Prepare the inputs to validate
+    $inputs = [
+        'ssn' => filter_var($_POST['ssn'], FILTER_SANITIZE_NUMBER_INT), #explaination below
+        'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+        'fname' => htmlspecialchars(trim($_POST['fname'])), #explaination below
+        'lname' => htmlspecialchars(trim($_POST['lname'])),
+        'password' => $_POST['password'],
+        'cpassword' => $_POST['cpassword'],
+        'date' => $_POST['date'],
+    ];
+ // Validate the inputs
+ $violations = $validator->validate($inputs, $constraints);
+
+ // If there are violations, display them
+ if (count($violations) > 0) {
+     foreach ($violations as $violation) {
+         echo '<script>alert("' . $violation->getMessage() . '")</script>';
+     }
+     exit;
+ }
+////////////////////////////////////////END OF SYMFONY VALIDATION//////////////////////////////////////////
+
       // filter_var() function explained
       // fliter_var(variable , filter)
-      
       // variable: The data to validate or sanitize.
-
       // filter: A predefined filter
       // common filters
       // FILTER_SANITIZE_STRING (deprecated): Removes HTML tags and encodes special characters.
       // FILTER_SANITIZE_EMAIL: Removes illegal characters from an email address.
       // FILTER_VALIDATE_EMAIL: Validates whether the input is a properly formatted email.
       // FILTER_SANITIZE_NUMBER_INT: Removes all characters except digits, +, and -.
-      $ssn = filter_var($_POST["ssn"], FILTER_SANITIZE_NUMBER_INT);
-      $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
 
+    //   $ssn = filter_var($_POST["ssn"], FILTER_SANITIZE_NUMBER_INT);
+    //   $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+
+///////////////////////////////////////////HTML ENCODING///////////////////////////////////////////
       // htmlspecialchars(string, flags, encoding, double_encode)
       // The htmlspecialchars() function converts special characters into HTML entities.
       // This is mainly used to prevent Cross-Site Scripting (XSS)
@@ -93,36 +154,31 @@ session_start();
       // $safe_input = htmlspecialchars($input);
       // Output: "&lt;script&gt;alert('XSS');&lt;/script&gt;"
       // The trim() function removes whitespace or specific characters from the beginning and end of a string.
-      $fname = htmlspecialchars(trim($_POST["fname"]));
-      $lname = htmlspecialchars(trim($_POST["lname"]));
-      $pass = $_POST["password"];
-      $cpass = $_POST["cpassword"];
-      $date = $_POST["date"];
+
+  //    $fname = htmlspecialchars(trim($_POST["fname"]));
+  //    $lname = htmlspecialchars(trim($_POST["lname"]));
+///////////////////////////////////////////End of HTML ENCODING//////////////////////////////////////////
+
 
       // Validate email format
-      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      if (!filter_var($inputs['email'], FILTER_VALIDATE_EMAIL)) {
           echo '<script>alert("Invalid email format.")</script>';
           exit;
       }
 
-      // Validate password match
-      if ($pass !== $cpass) {
-          echo '<script>alert("Passwords do not match.")</script>';
-          exit;
-      }
 
       // Hash the password
       // password_hash(password, algo)
       // password: The plain-text password to be hashed.
       // bcrypt hashing algorithm by default --> PASSWORD_DEFAULT
-      $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
+      $hashed_password = password_hash($inputs['password'], PASSWORD_DEFAULT);
 
       // Convert date to the correct format
-      $convert_format = date("Y-m-d", strtotime($date));
+      $convert_format = date("Y-m-d", strtotime($inputs['date']));
 
       // Check if SSN or Email already exists
       $stmt = $conn->prepare("SELECT cssn, email FROM customer WHERE cssn = ? OR email = ?");
-      $stmt->bind_param("ss", $ssn, $email);
+      $stmt->bind_param("ss", $inputs['ssn'], $inputs['email']);
       $stmt->execute();
       $stmt->store_result();
 
@@ -137,7 +193,7 @@ session_start();
       // Insert the data into the customer table
       $stmt = $conn->prepare("INSERT INTO customer (cssn, email, fname, lname, cpass, bdate, total_rent) VALUES (?, ?, ?, ?, ?, ?, ?)");
       $total_rent = 0; // Default total rent
-      $stmt->bind_param("ssssssi", $ssn, $email, $fname, $lname, $hashed_password, $convert_format, $total_rent);
+      $stmt->bind_param("ssssssi", $inputs['ssn'], $inputs['email'], $inputs['fname'], $inputs['lname'], $hashed_password, $convert_format, $total_rent);
 
       if ($stmt->execute()) {
           header("Location: home.php");

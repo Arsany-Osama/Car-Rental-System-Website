@@ -1,5 +1,15 @@
 <?php
- session_start();
+session_start();
+
+// Restrict access to only admins
+if (!isset($_SESSION['admin_data']) || $_SESSION['admin_data']['role'] !== 'admin') {
+    // Redirect unauthorized users (customers) to the home page
+    header("Location: home.php");
+    exit;
+}
+?>
+
+<?php
   // Constants
   include("connection.php");
 
@@ -59,7 +69,7 @@
 
     while ($row = $result2->fetch_assoc()) {
       echo "<tr><td>" . $row["plate_id"] . "</td><td>". $row["start_time"] . "</td><td>" . $row["return_date"] ."</td></tr>";
-    } 
+    }
     echo "</table>";
   } else {
     echo "No Current Data For Car Status Table";
@@ -76,7 +86,7 @@
 
   while ($row = $result4->fetch_assoc()) {
     echo "<tr><td>" . $row["rent_id"] . "</td><td>". $row["cssn"] . "</td><td>" . $row["plate_id"] . "</td><td>" . $row["total_hours"] . "</td><td>" . $row["start_date"] . "</td><td>". $row["return_date"]. "</td><td>" . $row["total_price"] ."</td></tr>";
-  } 
+  }
   echo "</table>";
   } else {
     echo "No Current Data For Car Status Table";
@@ -128,15 +138,15 @@
     include("./connection.php");
     $start_date = $_GET["_start_date_"];
     $end_date = $_GET["_return_date_"];
-    $sql5 = "SELECT r.rent_id, r.cssn , r.plate_id , r.start_date , r.return_date , c.email , c.fname , c.lname , c.bdate , c.total_rent , car.brand , car.model , car.year , car.price_per_hour , r.total_hours 
+    $sql5 = "SELECT r.rent_id, r.cssn , r.plate_id , r.start_date , r.return_date , c.email , c.fname , c.lname , c.bdate , c.total_rent , car.brand , car.model , car.year , car.price_per_hour , r.total_hours
     FROM rent AS r JOIN customer AS c ON r.cssn = c.cssn JOIN car ON r.plate_id = car.plate_id WHERE r.start_date >= '$start_date' AND r.return_date <= '$end_date'";
-  
+
     $result5 = $conn->query($sql5);
     if ($result5->num_rows > 0) {
       echo "<section>";
       echo "<table >";
       echo "<tr><th> rent_id </th> <th> cssn </th> <th> plate_id </th> <th> start_date </th> <th> return_date </th> <th> email </th> <th> fname </th> <th> lname </th> <th> bdate </th> <th> total_rent </th> <th>brand</th> <th>model</th> <th>year</th> <th>price_per_hour</th> <th>Total Hours</th> </tr>";
-  
+
       while ($row = $result5->fetch_assoc()) {
           echo "<tr><td>" . $row["rent_id"] . "</td><td>" . $row["cssn"] . "</td><td>" . $row["plate_id"] . "</td><td>" . $row["start_date"]  . "</td><td>" . $row["return_date"]  . "</td><td>" . $row["email"] .  "</td><td>" . $row["fname"] . "</td><td>" . $row["lname"] . "</td><td>" . $row["bdate"] . "</td><td>" . $row["total_rent"] . "</td><td>" . $row["brand"] . "</td><td>" . $row["model"] . "</td><td>" . $row["year"] . "</td><td>" . $row["price_per_hour"] . "</td><td>" . $row["total_hours"] . "</td></tr>";
       }
@@ -196,13 +206,13 @@
     JOIN customer AS c ON r.cssn = c.cssn
     JOIN car ON r.plate_id = car.plate_id
     WHERE r.start_date >= '$start_date' AND r.return_date <= '$end_date'";
-  
+
     $result7 = $conn->query($sql7);
     if ($result7->num_rows > 0) {
       echo "<section>";
       echo "<table>";
       echo "<tr><th> rent_id </th> <th> cssn </th> <th> plate_id </th> <th> fname </th> <th> email </th> <th> price_per_hour </th> <th> total_hours </th> <th> total_price </th></tr>";
-  
+
       while ($row = $result7->fetch_assoc()) {
           echo "<tr><td>" . $row["rent_id"] . "</td><td>" . $row["cssn"] . "</td><td>" . $row["plate_id"] . "</td><td>"   . $row["fname"] . "</td><td>" . $row["email"] . "</td><td>" . $row["price_per_hour"] . "</td><td>" . $row["total_hours"] . "</td><td>" . $row["total_price"] . "</td></tr>" ;
       }

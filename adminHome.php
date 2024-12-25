@@ -1,3 +1,15 @@
+<?php
+session_start();
+// Restrict access to only admins
+if (!isset($_SESSION['admin_data']) || $_SESSION['admin_data']['role'] !== 'admin') {
+    // Redirect unauthorized users (customers) to the home page
+    header("Location: home.php");
+    exit;
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,10 +67,12 @@
 
 </body>
 </html>
+
+
 <?php
     if(isset($_POST['submit'])){
         include("connection.php");
-        
+
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
