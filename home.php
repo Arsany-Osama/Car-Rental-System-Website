@@ -12,13 +12,13 @@
         <!--webpage header-->
 <header>
     <div class="navbar">
-    
-        
+
+
 <form action="">
     <input type="submit" name="Logout" value="Logout" class="btn">
-            
+
         <h1 id="header">Rent Now</h1>
-        
+
         <ul>
             <li><a href="">Home</a></li>
             <li><a href="">About Us</a></li>
@@ -36,33 +36,33 @@
 
 <div class="form-container">
     <form action="">
-    
+
         <div class="input-box">
             <span>Brand</span>
             <input type="text" name ="brand" placeholder="Car Brand">
         </div>
-        
+
         <div class="input-box">
             <span>Model</span>
             <input type="text" name="model" placeholder="Car model">
         </div>
-    
+
         <div class="input-box">
             <span>Color</span>
             <input type="text" name="color" placeholder="Car Color">
         </div>
-    
+
         <div class="input-box">
             <span>Production year</span>
             <input type="text" name="year" placeholder="Year">
         </div>
-    
+
     <input type="submit" name="search" value="Search" class="btn">
     </form>
     </div>
 
     <!--car sample for view-->
-    
+
 
 </section>
 
@@ -211,9 +211,9 @@ if (isset($_GET['search'])) {
             $color = $row['color'];
             $plate_id = $row['plate_id'];
             $reserved_plate_id = $row['reserved_plate_id'];
-    
+
             array_push($collection, [$plate_id, $image_path, $model, $brand, $year, $price_per_hour, $color]);
-    
+
             echo '<div class="box">';
             echo '<div class="box-img">';
             echo '<img src="' . $image_path . '" alt="" style="border-radius: 20;">';
@@ -222,7 +222,7 @@ if (isset($_GET['search'])) {
             echo '<p>' . $year . '</p>';
             echo '<p>' . $price_per_hour . ' $/hour</p>';
             echo '<p>' . $color . '</p>';
-    
+
             if ($reserved_plate_id == $plate_id) {
                 echo '<button disabled class="btn">Rented</button>';
             } else {
@@ -231,7 +231,7 @@ if (isset($_GET['search'])) {
                 echo '<input type="submit" value="Rent" class="btn">';
                 echo '</form>';
             }
-    
+
             echo '</div>';
         }
         echo '</div>';
@@ -284,6 +284,8 @@ $conn->close();
     <a href="#">support</a>
     <br>
     <a href="#">renting policy</a>
+    <br>
+    <a href="adminHome.php">Admin Home</a>
 </div>
 
 </section>

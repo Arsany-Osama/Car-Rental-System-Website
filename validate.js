@@ -1,3 +1,4 @@
+//checks if passsword matches confirm password
 function confirmPS() {
   const confPass = document.getElementById("conPass").value;
   const pass = document.getElementById("pass").value;
@@ -13,6 +14,8 @@ function confirmPS() {
   return true;
 }
 
+//////////////////////////////Use regular expressions/////////////////////////////////////////////////////
+//check password strength
 function validatePassword() {
   const password = document.getElementById("pass").value;
   const passAlert = document.getElementById("passAlert");
