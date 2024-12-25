@@ -69,7 +69,12 @@ CREATE TABLE customer_address (
     street VARCHAR(300) NOT NULL
 );
 
+ALTER TABLE customer ADD COLUMN otp VARCHAR(6) NULL;
+ALTER TABLE customer ADD COLUMN otp_expiration DATETIME NULL;
+ALTER TABLE admin ADD COLUMN otp VARCHAR(6) NULL;
+ALTER TABLE admin ADD COLUMN otp_expiration DATETIME NULL;
 
+-------------------------------------unused queries---------------------------------------------------------------------
 ALTER TABLE rent_address ADD CONSTRAINT fk_rent_address_rent_id FOREIGN KEY (rent_id) REFERENCES rent (rent_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE rent_address ADD CONSTRAINT fk_rent_address_address_id FOREIGN KEY (address_id) REFERENCES customer_address (address_id) ON UPDATE CASCADE ON DELETE CASCADE;
