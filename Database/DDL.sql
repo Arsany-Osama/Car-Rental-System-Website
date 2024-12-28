@@ -74,7 +74,6 @@ ALTER TABLE customer ADD COLUMN otp_expiration DATETIME NULL;
 ALTER TABLE admin ADD COLUMN otp VARCHAR(6) NULL;
 ALTER TABLE admin ADD COLUMN otp_expiration DATETIME NULL;
 
--------------------------------------unused queries---------------------------------------------------------------------
 ALTER TABLE rent_address ADD CONSTRAINT fk_rent_address_rent_id FOREIGN KEY (rent_id) REFERENCES rent (rent_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE rent_address ADD CONSTRAINT fk_rent_address_address_id FOREIGN KEY (address_id) REFERENCES customer_address (address_id) ON UPDATE CASCADE ON DELETE CASCADE;
@@ -89,7 +88,7 @@ ALTER TABLE customer_address ADD CONSTRAINT fk_customer_address_cssn FOREIGN KEY
 
 ALTER TABLE rent_contact ADD CONSTRAINT fk_rent_contact_rent_id FOREIGN KEY (rent_id) REFERENCES rent (rent_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-INSERT INTO admin VALUES(123 , "mark@gmail.com" , "mark" , "magdy" , "mmMM11++" , "alex" , "alagamy");
+
 SELECT * FROM admin;
 SELECT * FROM car;
 SELECT * FROM reserved_cars;
@@ -99,7 +98,6 @@ SELECT * FROM customer;
 SELECT * FROM rent_address;
 SELECT * FROM customer_address;
 DELETE FROM reserved_cars;
-INSERT INTO rent_address VALUE(1,1);
 
 DELETE FROM reserved_cars;
 DELETE FROM rent;

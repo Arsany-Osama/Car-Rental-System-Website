@@ -76,7 +76,7 @@ $conn->close();
     <form action="" method="post">
       <h2>Enter OTP</h2>
       <div class="input-field">
-        <input type="text" required name="otp" maxlength="6" placeholder="Enter your OTP">
+        <input type="text" required name="otp" maxlength="6">
         <label>OTP</label>
       </div>
       <button type="submit" name="submit">Verify OTP</button>

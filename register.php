@@ -58,7 +58,7 @@
 </html>
 
 <?php
-require 'vendor/autoload.php'; // Include the autoloader for Symfony Validator
+require './vendor/autoload.php'; // Include the autoloader for Symfony Validator
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints as Assert;
   if (isset($_POST['submit'])) {
@@ -78,7 +78,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     $constraints = new Assert\Collection([
         'ssn' => [
             new Assert\NotBlank(),
-            new Assert\Regex(['pattern' => '/^\d{3}$/', 'message' => 'SSN must be exactly 3 digits.']),
+            new Assert\Regex(['pattern' => '/^\d{7}$/', 'message' => 'SSN must be exactly 7 digits.']),
         ],
         'email' => [
             new Assert\NotBlank(),
